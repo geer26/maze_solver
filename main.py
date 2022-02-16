@@ -1,14 +1,27 @@
-from PIL import Image
+from PIL import Image, ImageOps
 
-class maze():
-    image = None
-    width = None
+class Maze():
+
     height = None
+    width = None
+    image = None
+    map = []
 
-    def init(self, filename = "maze.bmp"):
-        self.image = Image.open(filename)
-        self.width = self.image.size(0)
-        self.height = self.image.size(1)
+
+    def __init__(self, filename = "maze.bmp"):
+        self.image = self.convert_color(Image.open(filename))
+        self.width = self.image.size[0]
+        self.height = self.image.size[1]
+
+        print(self.image.format, self.image.size, self.image.mode)
+
+    def convert_color(self, image):
+        return ImageOps.grayscale(image)
+
+    def genmap(self, image):
+        for x in range(self.width):
+            for y in range(self.height):
+                print(image.getpixel((x,y)))
 
 
 
@@ -20,4 +33,6 @@ def get_image(name = "maze.bmp"):
 
 if __name__ == "__main__":
     print("Hello world!")
-    get_image()
+    #get_image()
+    im = Maze()
+    im.genmap(im.image)
