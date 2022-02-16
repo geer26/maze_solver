@@ -22,6 +22,7 @@ class Maze():
         for x in range(self.width):
             for y in range(self.height):
                 print(image.getpixel((x,y)))
+                if y == self.height-1: print('\n')
 
 
 
