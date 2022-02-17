@@ -92,6 +92,7 @@ class Maze():
         for point in self.map:
             if point.x_pos == x_pos and point.y_pos == y_pos and not point.wall and not point.visited:
                 return point
+                print(f'POINT: {point.id}')
             return False
 
     def solve(self):
@@ -99,6 +100,10 @@ class Maze():
         actual_point.level = 0
         actual_point.visited = True
         while actual_point != self.doors[1]:
+            point_south = None
+            point_north = None
+            point_west = None
+            point_east = None
             #get possible directions
             #get accessible (not wall and not visited) pixels nearby - north
             if actual_point.y_pos != 0:
@@ -112,6 +117,7 @@ class Maze():
             # get accessible (not wall and not visited) pixels nearby - west
             if actual_point.y_pos != 0:
                 point_west = self.filter_from_points(actual_point.x_pos-1, actual_point.y_pos)
+            print(f'directions: N:{point_north} , E:{point_east} , S:{point_south}, W:{point_west}')
 
 
 
