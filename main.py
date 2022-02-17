@@ -1,6 +1,18 @@
 from PIL import Image, ImageOps
 import uuid
 
+class Node():
+    x_pos = None
+    y_pos = None
+    parent = None
+    visited = False
+
+    def __init__(self, x_pos, y_pos, parent = None, visited = True):
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.parent = parent
+        return None
+
 class Unit():
 
     x_pos = None
@@ -28,6 +40,7 @@ class Maze():
     image = None
     doors = None
     level = 0
+    nodes = []
     map = []
     tree = []
 
@@ -73,17 +86,32 @@ class Maze():
                 if not point.wall:
                     doors.append(point)
                     continue
-        #for door in doors:
-        #    print(f'{door.id} :: {door.x_pos}:{door.y_pos} - {door.wall}')
         return doors
+
+    def filter_from_points(self, x_pos, y_pos):
+        for point in self.map:
+            if point.x_pos == x_pos and point.y_pos == y_pos and not point.wall and not point.visited:
+                return point
+            return False
 
     def solve(self):
         actual_point = self.doors[0]
         actual_point.level = 0
         actual_point.visited = True
         while actual_point != self.doors[1]:
-
-            pass
+            #get possible directions
+            #get accessible (not wall and not visited) pixels nearby - north
+            if actual_point.y_pos != 0:
+                point_north = self.filter_from_points(actual_point.x_pos, actual_point.y_pos-1)
+            #get accessible (not wall and not visited) pixels nearby - south
+            if actual_point.y_pos != self.height-1:
+                point_south = self.filter_from_points(actual_point.x_pos, actual_point.y_pos+1)
+            # get accessible (not wall and not visited) pixels nearby - east
+            if actual_point.x_pos != self.width-1:
+                point_east = self.filter_from_points(actual_point.x_pos+1, actual_point.y_pos)
+            # get accessible (not wall and not visited) pixels nearby - west
+            if actual_point.y_pos != 0:
+                point_west = self.filter_from_points(actual_point.x_pos-1, actual_point.y_pos)
 
 
 
