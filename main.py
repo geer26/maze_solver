@@ -31,8 +31,6 @@ class Unit():
         self.visited = False
         self.level = level
 
-
-
 class Maze():
 
     height = None
@@ -119,9 +117,29 @@ class Maze():
                 point_west = self.filter_from_points(actual_point.x_pos-1, actual_point.y_pos)
             print(f'directions: N:{point_north} , E:{point_east} , S:{point_south}, W:{point_west}')
 
+class ToText():
+    image = None
+    filename = None
+
+    def __init__(self):
+        self.filename = input('Input filename to convert:')
+        self.image = Image.open(self.filename)
+        self.write_to_txt()
+        return None
+
+    def write_to_txt(self):
+        fname = str(self.filename.split('.')[0]) + '.txt'
+        with open(fname, 'w') as f:
+            for column in range(self.image.size[0]):
+                for row in range(self.image.size[1]):
+                    if self.image.getpixel((row, column)) < 128:
+                        f.write('#')
+                    else:
+                        f.write('o')
+                f.write('\n')
+        return True
 
 
 
 if __name__ == "__main__":
-    im = Maze()
-    im.solve()
+    im = ToText()
